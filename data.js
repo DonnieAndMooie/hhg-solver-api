@@ -161716,4 +161716,13 @@ const data =  [
     }
   ]
 
+const awayTeams = []
+
+for (const match of data){
+  if (!awayTeams.includes(match.awayTeam)){
+    awayTeams.push(match.awayTeam)
+  }
+}
+console.log(awayTeams)
+
 module.exports = data
