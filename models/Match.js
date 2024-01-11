@@ -1,6 +1,12 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose
 
+const goalScorerSchema = new Schema({
+    name: {type: String, required: true},
+    minute: {type: String, required: true}
+})
+
+
 const MatchSchema = new Schema({
     season: {type: String, required: true},
     homeTeam: {type: String, required: true},
@@ -10,9 +16,5 @@ const MatchSchema = new Schema({
     awayGoalScorers: [goalScorerSchema]
 })
 
-const goalScorerSchema = new Schema({
-    name: {type: String, required: true},
-    minute: {type: String, required: true}
-})
 
 module.exports = mongoose.model("Match", MatchSchema)

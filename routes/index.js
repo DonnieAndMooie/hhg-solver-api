@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
+const Match = require ("../models/Match")
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.json({"message": "hey"})
+router.get('/answer/:awayTeam/:stadium', async function(req, res, next) {
+  const answers = await Match.find({awayTeam: req.params.awayTeam, stadium: req.params.stadium})
+  res.json(answers)
 });
 
 module.exports = router;
