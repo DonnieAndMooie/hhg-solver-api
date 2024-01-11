@@ -1,0 +1,1 @@
+A solver for the Happy Hunting Grounds Quiz which features on the football cliches podcast. Select a stadium and a team to get a list of all possible Premier League goalscorers.
