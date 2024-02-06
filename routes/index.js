@@ -21,13 +21,6 @@ router.get('/answer/:awayTeam/:stadium', asyncHandler(async function(req, res, n
 }));
 
 router.get("/update", asyncHandler(async function (req, res, next) {
-  const origin = req.get("origin")
-  if (origin === "https://donnieandmooie.github.io"){
-    res.setHeader("Access-Control-Allow-Origin", "https://donnieandmooie.github.io");
-  }
-  else{
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
-  }
 
   await Match.deleteMany({season: "2023/24"})
   const url = "https://www.worldfootball.net/all_matches/eng-premier-league-2023-2024/"
@@ -57,7 +50,7 @@ router.get("/update", asyncHandler(async function (req, res, next) {
     })
     .then(async (response) => {
         const data =  await Promise.all(response)
-        console.log(data)
+        //console.log(data)
         for (const match of data){
           const newMatch = new Match({
             season: match.season,
@@ -68,6 +61,13 @@ router.get("/update", asyncHandler(async function (req, res, next) {
             stadium: match.stadium
           })
           await newMatch.save()
+        }
+        const origin = req.get("host")
+        if (origin === "localhost:3000"){
+          res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        }
+        else{
+          res.setHeader("Access-Control-Allow-Origin", "https://donnieandmooie.github.io")
         }
         res.json(data)
     })
