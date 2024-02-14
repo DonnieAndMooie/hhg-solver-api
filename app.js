@@ -7,10 +7,6 @@ const mongoose = require("mongoose")
 require("dotenv").config()
 const cors = require("cors")
 
-const corsOptions = {
-  origin: "https://donnieandmooie.github.io",
-};
-
 var indexRouter = require('./routes/index');
 
 var app = express();
@@ -23,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors(corsOptions))
+app.use(cors({origin: true, credentials: true}))
 
 app.use('/', indexRouter);
 
