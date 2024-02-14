@@ -62,13 +62,6 @@ router.get("/update", asyncHandler(async function (req, res, next) {
           })
           await newMatch.save()
         }
-        const origin = req.get("host")
-        if (origin === "localhost:3000"){
-          res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        }
-        else{
-          res.setHeader("Access-Control-Allow-Origin", "https://donnieandmooie.github.io")
-        }
         res.json(data)
     })
   }
