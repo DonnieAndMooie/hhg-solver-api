@@ -6,8 +6,7 @@ const cheerio = require("cheerio")
 const asyncHandler = require("express-async-handler")
 const fs = require("node:fs")
 
-
-router.get('/answer/:awayTeam/:stadium', asyncHandler(async function(req, res, next) {
+router.use((req, res, next) => {
   const origin = req.get("origin")
   if (origin === "https://donnieandmooie.github.io"){
     res.setHeader("Access-Control-Allow-Origin", "https://donnieandmooie.github.io");
@@ -15,7 +14,11 @@ router.get('/answer/:awayTeam/:stadium', asyncHandler(async function(req, res, n
   else{
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
   }
-  
+  next()
+})
+
+
+router.get('/answer/:awayTeam/:stadium', asyncHandler(async function(req, res, next) {
   const answers = await Match.find({awayTeam: req.params.awayTeam, stadium: req.params.stadium}).sort("season")
   res.json(answers)
 }));
