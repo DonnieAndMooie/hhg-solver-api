@@ -7,9 +7,13 @@ const mongoose = require("mongoose")
 require("dotenv").config()
 const cors = require("cors")
 
+const corsOptions = {
+  origin: "https://donnieandmooie.github.io",
+};
+
 var indexRouter = require('./routes/index');
 
-var app = express();
+var app = express(corsOptions);
 
 mongoose.connect(process.env.DATABASE_URL)
 
