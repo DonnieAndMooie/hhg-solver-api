@@ -5,10 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require("mongoose")
 require("dotenv").config()
+const cors = require("cors")
 
 var indexRouter = require('./routes/index');
 
 var app = express();
+app.use(cors())
 
 mongoose.connect(process.env.DATABASE_URL)
 
@@ -19,21 +21,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://donnieandmooie.github.io")
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested, Content-Type, Accept Authorization"
-  )
-  if (req.method === "OPTIONS") {
-    res.header(
-      "Access-Control-Allow-Methods",
-      "POST, PUT, PATCH, GET, DELETE"
-    )
-    return res.status(200).json({})
-  }
-  next()
-})
 
 app.use('/', indexRouter);
 
