@@ -36,7 +36,8 @@ router.get('/answer/:awayTeam/:stadium', asyncHandler(async function(req, res, n
 
 router.get("/update", asyncHandler(async function (req, res, next) {
 
-  await Match.deleteMany({season: "2023/24"})
+  //await Match.deleteMany({season: "2023/24"})
+  const savedMatches = await Match.find({season: "2023/24"})
   const url = "https://www.worldfootball.net/all_matches/eng-premier-league-2023-2024/"
   const season = "2023/24"
 
@@ -49,10 +50,29 @@ router.get("/update", asyncHandler(async function (req, res, next) {
         const allMatches = []
         const html = response.data
         const $ = cheerio.load(html)
+        let homeTeam = null
+        let saveMatch = false
          $(".standard_tabelle").find("a").each(async function(){
+
+          const href = $(this).attr("href")
+          if (href.startsWith("/teams")){
+            if (homeTeam){
+              let awayTeam = $(this).text()
+              const saved = savedMatches.find((match) => match.homeTeam === homeTeam && match.awayTeam === awayTeam)
+              homeTeam = null
+              if (saved === undefined){
+                saveMatch = true
+              }
+            }
+            else{
+              homeTeam = $(this).text()
+              saveMatch = false
+            }
+            return
+          }
+
             const text = $(this).text()
-            if (text.length === 10 && text[text.length - 2] === ")"){
-                const href = $(this).attr("href")
+            if (text.length === 10 && text[text.length - 2] === ")" && saveMatch){
                 const matchURL = `https://www.worldfootball.net${href}`
                 const matchData = fetchMatchData(matchURL, season)
                 //console.log(matchData)
