@@ -1,10 +1,16 @@
 var express = require('express');
 var router = express.Router();
 const Match = require ("../models/Match")
+const LevelOneFixture = require("../models/LevelOneFixture")
+const LevelTwoFixture = require ("../models/LevelTwoFixture")
+const LevelThreeFixture = require("../models/LevelThreeFixture")
+const LevelFourFixture = require ("../models/LevelFourFixture")
+const LevelFiveFixture =  require ("../models/LevelFiveFixture")
+const DailyFixtures = require ("../models/DailyFixtures")
 const axios = require("axios")
 const cheerio = require("cheerio")
 const asyncHandler = require("express-async-handler")
-const fs = require("node:fs")
+
 
 router.use((req, res, next) => {
   const origin = req.get("origin")
@@ -148,6 +154,56 @@ router.get("/update", asyncHandler(async function (req, res, next) {
   
   
 }))
+
+router.get("/daily-fixtures", async (req, res, next) => {
+  const currentFixtures = await DailyFixtures.findOne({}) 
+  const savedDate = currentFixtures.timestamp.toDateString()
+    if (savedDate === new Date().toDateString()){
+      res.json(currentFixtures)
+    }
+    else{
+      await DailyFixtures.deleteOne()
+      const fixture1 = await LevelOneFixture.aggregate().sample(1)
+      const fixture2 = await LevelTwoFixture.aggregate().sample(1)
+      const fixture3 = await LevelThreeFixture.aggregate().sample(1)
+      const fixture4 = await LevelFourFixture.aggregate().sample(1)
+      const fixture5 = await LevelFiveFixture.aggregate().sample(1)
+
+      async function getAnswers(fixture){
+        const fixturedetails = await Match.find({awayTeam: fixture[0].awayTeam, stadium: fixture[0].stadium})
+        const answers = []
+        for (const game of fixturedetails){
+          for (const goalscorer of game.awayGoalScorers){
+            answers.push({season: game.season, player: goalscorer.name})
+          }
+        }
+        answers.sort((a,b) => (a.season > b.season) ? 1 : ((b.season > a.season) ? -1 : 0))
+        return answers
+      }
+
+      
+
+      const answers1 = await getAnswers(fixture1)
+      const answers2 = await getAnswers(fixture2)
+      const answers3 = await getAnswers(fixture3)
+      const answers4 = await getAnswers(fixture4)
+      const answers5 = await getAnswers(fixture5)
+
+      const dailyFixtures = new DailyFixtures({
+        levelOne: {awayTeam: fixture1[0].awayTeam, stadium: fixture1[0].stadium, answers: answers1},
+        levelTwo: {awayTeam: fixture2[0].awayTeam, stadium: fixture2[0].stadium, answers: answers2},
+        levelThree: {awayTeam: fixture3[0].awayTeam, stadium: fixture3[0].stadium, answers: answers3},
+        levelFour: {awayTeam: fixture4[0].awayTeam, stadium: fixture4[0].stadium, answers: answers4},
+        levelFive: {awayTeam: fixture5[0].awayTeam, stadium: fixture5[0].stadium, answers: answers5},
+        timestamp: Date.now()
+      })
+      await dailyFixtures.save()
+      res.json(dailyFixtures)
+    }
+
+    
+
+})
 
 
 
