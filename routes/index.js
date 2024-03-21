@@ -175,19 +175,20 @@ router.get("/daily-fixtures", async (req, res, next) => {
         for (const game of fixturedetails){
           for (const goalscorer of game.awayGoalScorers){
             answers.push({season: game.season, player: goalscorer.name})
+            console.log(goalscorer.name)
           }
         }
         answers.sort((a,b) => (a.season > b.season) ? 1 : ((b.season > a.season) ? -1 : 0))
         return answers
       }
 
-      
+      const [answers1, answers2, answers3, answers4, answers5] = await Promise.all([getAnswers(fixture1), getAnswers(fixture2), getAnswers(fixture3), getAnswers(fixture4), getAnswers(fixture5)])
 
-      const answers1 = await getAnswers(fixture1)
-      const answers2 = await getAnswers(fixture2)
-      const answers3 = await getAnswers(fixture3)
-      const answers4 = await getAnswers(fixture4)
-      const answers5 = await getAnswers(fixture5)
+      // const answers1 = await getAnswers(fixture1)
+      // const answers2 = await getAnswers(fixture2)
+      // const answers3 = await getAnswers(fixture3)
+      // const answers4 = await getAnswers(fixture4)
+      // const answers5 = await getAnswers(fixture5)
 
       const dailyFixtures = new DailyFixtures({
         levelOne: {awayTeam: fixture1[0].awayTeam, stadium: fixture1[0].stadium, answers: answers1},
