@@ -10,7 +10,6 @@ const DailyFixtures = require ("../models/DailyFixtures")
 const axios = require("axios")
 const cheerio = require("cheerio")
 const asyncHandler = require("express-async-handler")
-const ajax = require("ajax")
 
 
 router.use((req, res, next) => {
