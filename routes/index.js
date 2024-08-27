@@ -5025,6 +5025,7 @@ router.get("/test", async (req, res, next) => {
     "Juan Camilo Zuniga",
     "Ysrael Zuniga",
     "Elsad Zverotic",
+    "Sammie Szmodics",
     ]
     
   const missingPlayers = []
