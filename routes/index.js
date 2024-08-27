@@ -44,7 +44,7 @@ router.get("/update", asyncHandler(async function (req, res, next) {
 
   //await Match.deleteMany({season: "2023/24"})
   const savedMatches = await Match.find({season: "2023/24"})
-  const url = "https://www.worldfootball.net/all_matches/eng-premier-league-2023-2024/"
+  const url = "https://www.worldfootball.net/all_matches/eng-premier-league-2024-2025/"
   const season = "2023/24"
 
   await fetchSeasonData(url, season)
