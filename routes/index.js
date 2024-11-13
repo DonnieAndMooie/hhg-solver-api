@@ -5081,6 +5081,7 @@ router.get("/test", async (req, res, next) => {
     "Niclas Fulkrug",
     "Massimo Luongo",
     "Sam Morsy",
+    "Ferdi Kadioglu"
     ]
     
   const missingPlayers = []
