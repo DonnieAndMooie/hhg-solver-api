@@ -42,7 +42,7 @@ router.get('/answer/:awayTeam/:stadium', asyncHandler(async function(req, res, n
 
 router.get("/update", asyncHandler(async function (req, res, next) {
 
-  //await Match.deleteMany({season: "2023/24"})
+  //await Match.deleteMany({season: "2024/25"})
   const savedMatches = await Match.find({season: "2024/25"})
   const url = "https://www.worldfootball.net/all_matches/eng-premier-league-2024-2025/"
   const season = "2024/25"
@@ -81,7 +81,7 @@ router.get("/update", asyncHandler(async function (req, res, next) {
             if (text.length === 10 && text[text.length - 2] === ")" && saveMatch){
                 const matchURL = `https://www.worldfootball.net${href}`
                 const matchData = fetchMatchData(matchURL, season)
-                //console.log(matchData)
+                console.log(matchData)
                 allMatches.push(matchData)
             }
         })
@@ -134,11 +134,11 @@ router.get("/update", asyncHandler(async function (req, res, next) {
                 for (const word of words){
                     if (word.match(/^\d/)) {
                         minute = word.replace(".", "'")
-                        name = name.slice(0, -1).normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                        name = name.slice(0, -1).normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
                         break
                      }
                      else{
-                        name += word + " "
+                        name += word.trim() + " "
                      }
                 }
                 matchData.awayGoalScorers.push({
