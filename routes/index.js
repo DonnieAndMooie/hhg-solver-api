@@ -5078,7 +5078,7 @@ router.get("/test", async (req, res, next) => {
     "Sammie Szmodics",
     "Wes Burns",
     "Guido Rodriguez",
-    "Niclas Fulkrug",
+    "Niclas Fullkrug",
     "Massimo Luongo",
     "Sam Morsy",
     "Ferdi Kadioglu",
