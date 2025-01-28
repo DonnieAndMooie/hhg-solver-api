@@ -5083,6 +5083,7 @@ router.get("/test", async (req, res, next) => {
     "Sam Morsy",
     "Ferdi Kadioglu",
     "Justin Devenny",
+    "Manuel Ugarte"
     ]
     
   const missingPlayers = []
