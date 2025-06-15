@@ -4077,7 +4077,7 @@ const players = [
 "Mamadou Sakho",
 "Artim Sakiri",
 "Bakary Sako",
-"Mo Salah ",
+"Mo Salah",
 "John Salako",
 "Carlos Salcido",
 "Michel Salgado",
